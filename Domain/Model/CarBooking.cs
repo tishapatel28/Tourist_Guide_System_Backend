@@ -18,5 +18,8 @@ namespace Domain.Model
         public DateTime EndingDate { get; set; }
         public int Price { get; set; }
 
+        
+
+
     }
 }

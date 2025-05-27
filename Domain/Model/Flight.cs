@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -12,8 +13,8 @@ namespace Domain.Model
         [Required(ErrorMessage = "Enter Departing Date...")]
         public DateTime	DepartingDate { get; set; }
 
-        [Required(ErrorMessage = "Enter Returning Date...")]
-        public DateTime ReturningDate { get; set; }
+        
+        public DateTime? ReturningDate { get; set; }
 
         [Required(ErrorMessage = "Enter Departing Time...")]
         [DataType("varchar(20)")]
@@ -31,6 +32,12 @@ namespace Domain.Model
         [DataType("varchar(30)")]
         public String DepartingCity { get; set; }
 
+
+        public string CombinedDepLocation { get; set; }
+        public string CombinedDestination { get; set; }
+        public string DestinationCountry { get; set; }
+        public string DestinationCity { get; set; }
+
         [Required(ErrorMessage = "Enter Return Departing Time...")]
         [DataType("varchar(20)")]
         public String ReturnDepartingTime { get; set; }
@@ -45,6 +52,12 @@ namespace Domain.Model
 
         [Required(ErrorMessage = "Enter Amount...")]
         public int Price { get; set; }
+
+        [DisplayName("Image")]
+        [Required(ErrorMessage = "Please Upload Flight image...")]
+        public String image { get; set; }
+
+        public virtual List<FlightBooking> FlightBookings { get; set; }
 
     }
 }

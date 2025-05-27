@@ -20,5 +20,7 @@ namespace Domain.Model
         public DateTime StartingFromDate { get; set; }
         public DateTime EndingDate { get; set; }
         public int Price { get; set; }
+
+
     }
 }

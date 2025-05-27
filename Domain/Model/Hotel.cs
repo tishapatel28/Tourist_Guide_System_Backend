@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -39,6 +40,12 @@ namespace Domain.Model
         [Required(ErrorMessage = "Enter Room")]
         [DataType("varchar(20)")]
         public String Rooms { get; set; }
+
+        [DisplayName("Image")]
+        [Required(ErrorMessage = "Please Upload Hotel image...")]
+        public String image { get; set; }
+
+        public virtual List<HotelBooking> HotelBookings { get; set; }
 
     }
 }

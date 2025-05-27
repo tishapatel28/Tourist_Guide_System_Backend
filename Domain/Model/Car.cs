@@ -1,0 +1,28 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Domain.Model
+{
+   public class Car:BaseEntity
+    {
+        [Required(ErrorMessage ="Enter Description")]
+        [DataType("varchar(max)")]
+        public String Desc { get; set; }
+
+        [Required(ErrorMessage = "Enter Price")]        
+        public int Price { get; set; }
+
+        [Required(ErrorMessage = "Enter Country")]
+        [DataType("varchar(30)")]
+        public String Country { get; set; }
+
+        [Required(ErrorMessage = "Enter City")]
+        [DataType("varchar(30)")]
+        public String City { get; set; }
+
+    }
+}

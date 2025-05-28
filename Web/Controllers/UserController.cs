@@ -39,7 +39,7 @@ namespace Web.Controllers
 
         [Route("AddUser")]
         [HttpPost]
-        public async Task<IActionResult> Add(UserInsertViewModel user)
+        public async Task<IActionResult> Add([FromBody] UserInsertViewModel user)
         {
             if (ModelState.IsValid)
             {

@@ -92,11 +92,13 @@ namespace Infrastructure.Service.CustomService.Users
             if (Model != null)
             {
                 Model.Name = entity.Name;
-
+                Model.Email = entity.Email;
+                Model.Password = entity.Password;
+                Model.DOB = entity.DOB;
                 var res = await _repositary.Update(Model);
                 return res;
             }
- ;
+ 
             return false;
         }
     }

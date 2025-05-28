@@ -98,7 +98,14 @@ namespace Infrastructure.Service.CustomService.Cars
             if (Model != null)
             {
                 Model.Name = entity.Name;
-               
+                Model.Desc=entity.Desc;
+                Model.Price = entity.Price;
+                Model.Country = entity.Country;
+                Model.City = entity.City;
+                if (photo != null)
+                {
+                    Model.image = photo;
+                }
                 var res = await _repositary.Update(Model);
                 return res;
             }

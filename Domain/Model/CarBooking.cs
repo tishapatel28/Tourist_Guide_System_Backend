@@ -14,12 +14,8 @@ namespace Domain.Model
         public Guid carID { get; set; }
         public virtual Car car { get; set; }
         public DateTime BookingDate { get; set; }
-        public DateTime StartingfromDate { get; set; }
+        public DateTime StartingfromDate { get; set; }                                                                                                             
         public DateTime EndingDate { get; set; }
         public int Price { get; set; }
-
-        
-
-
     }
 }

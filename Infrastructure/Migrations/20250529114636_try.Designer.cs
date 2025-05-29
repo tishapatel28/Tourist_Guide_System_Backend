@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250527070407_try")]
+    [Migration("20250529114636_try")]
     partial class @try
     {
         /// <inheritdoc />
@@ -50,6 +50,9 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
+                    b.Property<int>("SeatingCapacity")
+                        .HasColumnType("int");
+
                     b.Property<string>("image")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -68,14 +71,27 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("BookingDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("EndingDate")
+                    b.Property<DateTime>("PickupDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Price")
+                    b.Property<Guid>("Pickup_Location_Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Rental_days")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("StartingfromDate")
+                    b.Property<DateTime>("ReturnDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<Guid>("Return_Location_Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TotalAmount")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("carID")
                         .HasColumnType("uniqueidentifier");
@@ -84,6 +100,10 @@ namespace Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("Pickup_Location_Id");
+
+                    b.HasIndex("Return_Location_Id");
 
                     b.HasIndex("carID");
 
@@ -282,6 +302,49 @@ namespace Infrastructure.Migrations
                     b.ToTable("HotelBooking");
                 });
 
+            modelBuilder.Entity("Domain.Model.Location", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("city")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("latitude")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("longitude")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("state")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("zip_code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Location");
+                });
+
             modelBuilder.Entity("Domain.Model.Restaurant", b =>
                 {
                     b.Property<Guid>("ID")
@@ -328,11 +391,9 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Model.RestaurantBooking", b =>
                 {
-                    b.Property<int>("RestaurantBookingId")
+                    b.Property<Guid>("RestaurantBookingId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RestaurantBookingId"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("BookingDate")
                         .HasColumnType("datetime2");
@@ -351,12 +412,18 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid>("userID")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("RestaurantBookingId");
 
                     b.HasIndex("RestaurantID");
+
+                    b.HasIndex("userID");
 
                     b.ToTable("RestaurantBooking");
                 });
@@ -390,6 +457,18 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Model.CarBooking", b =>
                 {
+                    b.HasOne("Domain.Model.Location", "Pickup_Location")
+                        .WithMany("PickupBookings")
+                        .HasForeignKey("Pickup_Location_Id")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Model.Location", "Return_Location")
+                        .WithMany("ReturnBookings")
+                        .HasForeignKey("Return_Location_Id")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Domain.Model.Car", "car")
                         .WithMany("carbooking")
                         .HasForeignKey("carID")
@@ -401,6 +480,10 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("userID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Pickup_Location");
+
+                    b.Navigation("Return_Location");
 
                     b.Navigation("car");
 
@@ -455,7 +538,7 @@ namespace Infrastructure.Migrations
 
                     b.HasOne("Domain.Model.User", "user")
                         .WithMany("RestaurantBookings")
-                        .HasForeignKey("RestaurantID")
+                        .HasForeignKey("userID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -477,6 +560,13 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Model.Hotel", b =>
                 {
                     b.Navigation("HotelBookings");
+                });
+
+            modelBuilder.Entity("Domain.Model.Location", b =>
+                {
+                    b.Navigation("PickupBookings");
+
+                    b.Navigation("ReturnBookings");
                 });
 
             modelBuilder.Entity("Domain.Model.Restaurant", b =>

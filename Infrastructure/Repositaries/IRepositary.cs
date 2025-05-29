@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositaries
 {
-    public interface IRepositary<T> where T:BaseEntity
+    public interface IRepositary<T> where T:class
     {
         Task<ICollection<T>> GetAll();  
         Task<T> Get(Guid ID);

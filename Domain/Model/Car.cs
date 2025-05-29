@@ -25,6 +25,9 @@ namespace Domain.Model
         [DataType("varchar(30)")]
         public String City { get; set; }
 
+        [Required(ErrorMessage = "Enter Seating Capacity of Car...")]
+        public int SeatingCapacity { get; set; }
+
         [DisplayName("Image")]
         [Required(ErrorMessage = "Please Upload Car image...")]
         public String image { get; set; }

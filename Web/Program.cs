@@ -1,8 +1,11 @@
 using Infrastructure.ContextClass;
 using Infrastructure.Repositaries;
+using Infrastructure.Service.CustomService.CarBookings;
 using Infrastructure.Service.CustomService.Cars;
 using Infrastructure.Service.CustomService.Flights;
 using Infrastructure.Service.CustomService.Hotels;
+using Infrastructure.Service.CustomService.Locations;
+using Infrastructure.Service.CustomService.RestaurantBookings;
 using Infrastructure.Service.CustomService.Restaurants;
 using Infrastructure.Service.CustomService.Users;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +26,9 @@ builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IRestaurantService, RestaurantService>();
 builder.Services.AddTransient<IHotelService, HotelService>();
 builder.Services.AddTransient<IFlightService, FlightService>();
+builder.Services.AddTransient<ICarBookingService, CarBookingService>();
+builder.Services.AddTransient<ILocationService, LocationService>();
+builder.Services.AddTransient<IRestaurantBookingService, RestaurantBookingService>();
 
 var app = builder.Build();
 

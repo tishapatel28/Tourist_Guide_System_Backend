@@ -29,6 +29,7 @@ namespace Infrastructure.Service.CustomService.Cars
                 Country = entity.Country,
                 City = entity.City,
                 image = photo,
+                SeatingCapacity=entity.SeatingCapacity
             };
             return await _repositary.Add(model);
         }
@@ -60,6 +61,7 @@ namespace Infrastructure.Service.CustomService.Cars
                 Price = res.Price,
                 Country = res.Country,
                 City = res.City,
+                SeatingCapacity = res.SeatingCapacity,
                 image = res.image
             };
             return ViewModel;
@@ -80,7 +82,8 @@ namespace Infrastructure.Service.CustomService.Cars
                     Price = item.Price,
                     Country=item.Country,
                     City=item.City,
-                    image=item.image
+                    SeatingCapacity = item.SeatingCapacity,
+                    image =item.image
                 };
                 ViewModel.Add(vm);
             }
@@ -102,6 +105,7 @@ namespace Infrastructure.Service.CustomService.Cars
                 Model.Price = entity.Price;
                 Model.Country = entity.Country;
                 Model.City = entity.City;
+                Model.SeatingCapacity = entity.SeatingCapacity;
                 if (photo != null)
                 {
                     Model.image = photo;

@@ -11,19 +11,17 @@ namespace Domain.Model
     public class RestaurantBooking
     {
         [Key]
-        public int RestaurantBookingId { get; set; }
-
+        public Guid RestaurantBookingId { get; set; }
         [Required(ErrorMessage = "Enter Restaurant...")]
         public Guid RestaurantID { get; set; }
         public virtual Restaurant restaurant { get; set; }
-
         [Required(ErrorMessage = "Enter User....")]
         public Guid userID { get; set; }
         public virtual User user { get; set; }
-
         public string MealTime { get; set; }
         public string TotalPeople { get; set; }    
         public DateTime BookingDate { get; set; }
         public DateTime MealDate { get; set; }
+       public String status { get; set; }
     }
 }

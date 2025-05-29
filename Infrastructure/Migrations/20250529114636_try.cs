@@ -20,6 +20,7 @@ namespace Infrastructure.Migrations
                     Price = table.Column<int>(type: "int", nullable: false),
                     Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     City = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SeatingCapacity = table.Column<int>(type: "int", nullable: false),
                     image = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -77,6 +78,25 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Location",
+                columns: table => new
+                {
+                    ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    city = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    state = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    country = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    zip_code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    latitude = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    longitude = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Location", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "restaurant",
                 columns: table => new
                 {
@@ -117,10 +137,14 @@ namespace Infrastructure.Migrations
                     ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     userID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     carID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Pickup_Location_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Return_Location_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PickupDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ReturnDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     BookingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    StartingfromDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Price = table.Column<int>(type: "int", nullable: false)
+                    Rental_days = table.Column<int>(type: "int", nullable: false),
+                    TotalAmount = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -129,6 +153,18 @@ namespace Infrastructure.Migrations
                         name: "FK_CarBooking_Car_carID",
                         column: x => x.carID,
                         principalTable: "Car",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_CarBooking_Location_Pickup_Location_Id",
+                        column: x => x.Pickup_Location_Id,
+                        principalTable: "Location",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_CarBooking_Location_Return_Location_Id",
+                        column: x => x.Return_Location_Id,
+                        principalTable: "Location",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -201,21 +237,21 @@ namespace Infrastructure.Migrations
                 name: "RestaurantBooking",
                 columns: table => new
                 {
-                    RestaurantBookingId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RestaurantBookingId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RestaurantID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     userID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     MealTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TotalPeople = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BookingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    MealDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    MealDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    status = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RestaurantBooking", x => x.RestaurantBookingId);
                     table.ForeignKey(
-                        name: "FK_RestaurantBooking_User_RestaurantID",
-                        column: x => x.RestaurantID,
+                        name: "FK_RestaurantBooking_User_userID",
+                        column: x => x.userID,
                         principalTable: "User",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
@@ -231,6 +267,16 @@ namespace Infrastructure.Migrations
                 name: "IX_CarBooking_carID",
                 table: "CarBooking",
                 column: "carID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CarBooking_Pickup_Location_Id",
+                table: "CarBooking",
+                column: "Pickup_Location_Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CarBooking_Return_Location_Id",
+                table: "CarBooking",
+                column: "Return_Location_Id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CarBooking_userID",
@@ -261,6 +307,11 @@ namespace Infrastructure.Migrations
                 name: "IX_RestaurantBooking_RestaurantID",
                 table: "RestaurantBooking",
                 column: "RestaurantID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RestaurantBooking_userID",
+                table: "RestaurantBooking",
+                column: "userID");
         }
 
         /// <inheritdoc />
@@ -280,6 +331,9 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Car");
+
+            migrationBuilder.DropTable(
+                name: "Location");
 
             migrationBuilder.DropTable(
                 name: "Flight");

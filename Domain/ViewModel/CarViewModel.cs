@@ -19,6 +19,7 @@ namespace Domain.ViewModel
         public String Country { get; set; }  
         public String City { get; set; } 
         public String image { get; set; }
+        public int SeatingCapacity { get; set; } 
     }
 
     public class CarInsertViewModel
@@ -28,6 +29,7 @@ namespace Domain.ViewModel
         public int Price { get; set; }
         public String Country { get; set; }
         public String City { get; set; }
+        public int SeatingCapacity { get; set; }
         public IFormFile image { get; set; }
     }
 

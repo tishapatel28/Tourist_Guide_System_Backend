@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositaries
 {
-    public class Repositary<T>:IRepositary<T> where T :BaseEntity
+    public class Repositary<T>:IRepositary<T> where T :class
     {
         private readonly ApplicationDbContext _context; 
         private readonly DbSet<T> entities;  

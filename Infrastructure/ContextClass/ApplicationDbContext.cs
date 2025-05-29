@@ -30,6 +30,18 @@ namespace Infrastructure.ContextClass
                 .HasForeignKey(t => t.userID)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<CarBooking>()
+               .HasOne(t => t.Pickup_Location)
+               .WithMany(t => t.PickupBookings)
+               .HasForeignKey(t => t.Pickup_Location_Id)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<CarBooking>()
+             .HasOne(t => t.Return_Location)
+             .WithMany(t => t.ReturnBookings)
+             .HasForeignKey(t => t.Return_Location_Id)
+             .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<FlightBooking>()
                 .HasOne(t => t.flight)
                 .WithMany(t => t.FlightBookings)
@@ -63,7 +75,7 @@ namespace Infrastructure.ContextClass
             modelBuilder.Entity<RestaurantBooking>()
                .HasOne(t => t.user)
                .WithMany(t => t.RestaurantBookings)
-               .HasForeignKey(t => t.RestaurantID)
+               .HasForeignKey(t => t.userID)
                .OnDelete(DeleteBehavior.Restrict);
 
         }
